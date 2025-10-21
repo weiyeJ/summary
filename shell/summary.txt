@@ -1,1 +1,3 @@
-sdfsdf
+repo credential install
+repo credential --store -u='j30' -p='~mh9'
+repo credential --protocol=https --host=lfg-y.com -u='j30' -p='~mhd'
