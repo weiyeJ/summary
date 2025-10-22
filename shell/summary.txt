@@ -1,3 +1,151 @@
 repo credential install
 repo credential --store -u='j30' -p='~mh9'
 repo credential --protocol=https --host=lfg-y.com -u='j30' -p='~mhd'
+
+# 解决冲突
+git reset HEAD^
+git restore file1
+git add .
+git commit -m "test"
+repo sync
+
+# 解决冲突2
+修改冲突的文件
+git rebase -- continue
+
+# git 选项
+--honor-no-changes 提交一个没有任何文件修改的提交
+git clean -xfd  // -x 删除被忽略的文件 -d 删除被忽略的目录
+git pull相当于 git fetch 跟着一个 git merge FETCH_HEAD
+git config --add core.filemode true  在检测文件模式变化时，包括文件权限的更改（如可执行权限）
+
+| `git status --short` | 快速查看所有状态 |
+| `git status --short | grep '^[M]'` | 仅查看修改过的文件 |
+| `git diff --name-only` | 查看工作区中修改的文件名 |
+| `git diff --name-only --cached` | 查看暂存区中修改的文件名 |
+
+BUILD_ALWAYS <bool>
+        启用此选项将强制始终运行构建步骤。这是可靠地确保外部项目自身的构建依赖关系得到评估的最简单方法，而不是依赖基于默认成功时间戳的方法
+
+
+ ls -l --block-size=m
+
+ git checkout 还原修改
+ git checkout <commit> <file> #将文件回退到指定commit 哈希值之前
+其中，`<commit>`是要回退到的commit的哈希值或分支名，`<file>`是要回退的文件名。
+
+1、本地做了commit的代码，使用git命令 git log，git checkout [id]可以找回。
+
+```
+git cherry-pick <commit ID>
+```
+
+这将把指定的提交复制到当前分支，您需要注意的是，如果指定的提交包含冲突，您需要手动解决冲突并提交更改。如果您想要在应用提交之前预览更改，可以使用以下命令：
+
+```
+git show <commit ID>
+```
+
+它将显示指定提交的更改内容。
+
+
+
+git branch -r 查看远程分支
+
+ git push origin --delete test 删除远程test分支
+ git push -f center master 强制更新远程仓库
+
+ 单仓拉取代码：https://www.php.cn/faq/544731.html
+ git init XXX.git
+ git fetch 
+ git branch -a 获取远程仓库的所有分支信息
+ git checkout origin 分支名/git fetch origin 分支名; git merge origin 分支名
+ git switch 分支名 切换分支， 若分支不存在就报错
+ git switch -c 分支名 创建分支
+
+ 这个命令会显示出stash的修改内容，以及每个修改的具体变化。如果你只想查看某个特定文件的修改，可以在命令后面加上文件路径，例如：
+git stash show -p stash@{n} path/to/file
+
+如何强制拉取远程仓库某个分支的代码合并到本地仓库
+- `git fetch --all`：从远程仓库获取最新代码；
+- `git reset --hard origin/master`：重置本地仓库到与远程仓库相同的状态；
+- `git pull origin master`：将远程仓库的代码合并到本地仓库。
+
+- git branch --set-upstream-to=origin/branch_name #设置将要合入的分支名
+
+$ git checkout -t origin/styhead -b my-styhead
+Branch 'my-styhead' set up to track remote branch 'styhead' from 'origin'.
+Switched to a new branch 'my-styhead'
+
+将一个远程仓库中的某个分支的内容覆盖到另一个远程仓库的同名分支上
+git checkout -b jwy
+git fetch remote（远程仓库别名） 分支名
+git reset --hard FETCH_HEAD
+git push --force  origin（另一个远程仓库别名） 分支名
+git push -f  origin HEAD:master
+
+ git status --ignored . 查看被忽略的文件
+ 
+ 单仓检出到指定分支  git checkout -b 指定分支
+
+ 使用ftp将板子里的东西导出来
+ ftpput ip地址 文件名
+
+ kasan/
+    0 dmesg                                                                      
+   1 free                                                                       
+   2 cat /proc/ka/proc/ka grep asan                                             
+   3 ls                                                                         
+   4 cd /mnt/jffs2/sdk_mnt/kasan/                                               
+   5 ls                                                                         
+   6 cat kasan_log | grep KASAN                                                 
+   7 cat kasan_log | grep BUG                                                   
+   8 cat kasan_log                                     
+
+  判断处理器是X86还是arm还是mips
+  1.arch
+  2.uname -a
+  3.file /bin/bash
+
+unrar 解压rar的包
+  
+  git show --name-status  这将显示最近一次提交的详细信息，包括更改的文件列表
+  git log -p path/to/file   查看每次提交对该文件的具体变更内容，包括添加、删除、修改的内容。
+  git remote add jwy 
+  git add ./* 对于隐藏文件没有作用
+
+  开源失败看config.log
+  cat /proc/kallsyms | grep asan 判断是否是kasan版本
+
+ar -x arm32A9le_5.10_ek_micro/pool/kernel-vmlinux-5.10-h402.rtos208.5.3.spc1200.r502.arm32a9el.rpm
+
+  for i in `ls *.rpm`; do rpm -qpl $i|grep "ip6_tables.ko"; if [ $? -eq 0 ]; then echo $i; fi; done
+  
+  git formate-patch -1/commit-id 将最近的一次提交/指定commit ID打成patch
+  
+  git commit --amend --author "jiangweiye<jiangweiye1@huawei.com>"    修改提交的作者 合入归一仓时禁止带工号
+  
+  git commit --amend -s  ##-s就是签名
+  
+  git reset --mixed  保留工作目录中的修改，但将暂存区的更改移除。也就是说，文件内容仍然存在，只是取消了 `git add` 的操作。
+  
+  
+  git rebase -i f084c18cdb86816ef9d00fc39cd8a2c1681eb97a 定基到某个commtId  然后在想要合并的commitId前输入f, 可以将多次提交合并成一次提交
+
+  git switch -c 新分支名 可以使得当前分支的提交保留到新的分支
+
+
+git add 但是没有commit 如何查看文件的修改：git diff --staged
+
+clang test.c --save-temps=obj -o test 
+--save-temps=obj` 是 Clang 编译器的一个选项，用于在编译过程中保存中间文件。具体来说，这个选项会将编译过程中的临时文件（如预处理后的文件、汇编文件等）保存到与目标文件相同的目录中，并且文件名会加上前缀或后缀以区分
+
+cat /etc/os-release  查看镜像操作系统发行版
+
+
+生成依赖关系图
+cmake --graphviz=dependencies.dot .
+使用 Graphviz 工具查看图
+dot -Tpng dependencies.dot -o dependencies.png
+
+
