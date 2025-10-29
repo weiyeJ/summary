@@ -636,10 +636,8 @@ find . -name "*.c" -exec grep -v "^$" {} \; | wc -l  统计所有.c文件中的�
 
 alias gitb='git branch'
 alias gits='git status'
-alias gitms='repo sync -j64 '
-alias gitmsd='repo -d --force-sync -j64 -J64'
 alias gitcm='git commit --amend'
 alias gita="git status | grep modified | cut -d':' -f2 | xargs git add"
-alias gitbd='list_b=$(gitb | grep -v "\*"); for branch in $list_b; do repo forall -- git branch -D $branch; done'
-alias hist='history | tail'
+alias gitbd='list_b=$(gitb | grep -v "\*"); for branch in $list_b; do repo git branch -D $branch; done'
+alias hist='history | tail -n 15'
 export PS1="[\t|\d]\u@\w>"
